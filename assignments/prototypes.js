@@ -7,7 +7,14 @@
   
   Each constructor function has unique properties and methods that are defined in their block comments below:
 */
-  
+  function GameObject(game){
+    this.createdAt = game.createdAt,
+    this.name = game.name,
+    this.dimensions = game.dimensions
+  }
+  GameObject.prototype.destroy = function(){
+    return `${this.name} was removed from the game.`;
+  };
 /*
   === GameObject ===
   * createdAt
@@ -15,6 +22,16 @@
   * dimensions (These represent the character's size in the video game)
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
+function CharacterStats(stats){
+  this.healthPoints = stats.healthPoints,
+  GameObject.call(this, stats)
+  }
+
+CharacterStats.prototype = Object.create(GameObject.prototype);
+
+CharacterStats.prototype.takeDamage = function(){
+  return `${this.name} took damage.`;
+}
 
 /*
   === CharacterStats ===
@@ -32,7 +49,18 @@
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
- 
+function Humanoid(noid){
+  CharacterStats.call(this, noid),
+  this.team = noid.team,
+  this.weapons = noid.weapons,
+  this.language = noid.language;
+}
+
+Humanoid.prototype = Object.create(CharacterStats.prototype);
+
+Humanoid.prototype.greet = function(){
+  return `${this.name} offers a greeting in ${this.language}`;
+}
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
   * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
@@ -41,7 +69,7 @@
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
+
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -102,7 +130,7 @@
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
+
 
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
